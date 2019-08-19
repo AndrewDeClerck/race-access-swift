@@ -14,6 +14,7 @@
 		973DF02A230B276E00EB5B60 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 973DF028230B276E00EB5B60 /* LaunchScreen.storyboard */; };
 		973DF035230B276E00EB5B60 /* RaceAccessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DF034230B276E00EB5B60 /* RaceAccessTests.swift */; };
 		973DF040230B276E00EB5B60 /* RaceAccessUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DF03F230B276E00EB5B60 /* RaceAccessUITests.swift */; };
+		973DF04E230B279000EB5B60 /* PThreadMutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DF04D230B279000EB5B60 /* PThreadMutex.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		973DF03B230B276E00EB5B60 /* RaceAccessUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RaceAccessUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		973DF03F230B276E00EB5B60 /* RaceAccessUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaceAccessUITests.swift; sourceTree = "<group>"; };
 		973DF041230B276E00EB5B60 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		973DF04D230B279000EB5B60 /* PThreadMutex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PThreadMutex.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 			children = (
 				973DF01F230B276D00EB5B60 /* AppDelegate.swift */,
 				973DF021230B276D00EB5B60 /* ViewController.swift */,
+				973DF04D230B279000EB5B60 /* PThreadMutex.swift */,
 				973DF023230B276D00EB5B60 /* Main.storyboard */,
 				973DF026230B276E00EB5B60 /* Assets.xcassets */,
 				973DF028230B276E00EB5B60 /* LaunchScreen.storyboard */,
@@ -258,6 +261,7 @@
 			files = (
 				973DF022230B276D00EB5B60 /* ViewController.swift in Sources */,
 				973DF020230B276D00EB5B60 /* AppDelegate.swift in Sources */,
+				973DF04E230B279000EB5B60 /* PThreadMutex.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,6 +439,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XAPF5ZV3Z9;
 				INFOPLIST_FILE = RaceAccess/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -453,12 +458,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XAPF5ZV3Z9;
 				INFOPLIST_FILE = RaceAccess/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.andrewdeclerck.RaceAccess;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
