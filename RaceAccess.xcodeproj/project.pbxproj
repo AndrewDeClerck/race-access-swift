@@ -15,6 +15,7 @@
 		973DF035230B276E00EB5B60 /* RaceAccessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DF034230B276E00EB5B60 /* RaceAccessTests.swift */; };
 		973DF040230B276E00EB5B60 /* RaceAccessUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DF03F230B276E00EB5B60 /* RaceAccessUITests.swift */; };
 		973DF04E230B279000EB5B60 /* PThreadMutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DF04D230B279000EB5B60 /* PThreadMutex.swift */; };
+		97DBA12C230DCAF900B8CAA0 /* ObjcSyncMutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DBA12B230DCAF900B8CAA0 /* ObjcSyncMutex.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		973DF03F230B276E00EB5B60 /* RaceAccessUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaceAccessUITests.swift; sourceTree = "<group>"; };
 		973DF041230B276E00EB5B60 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		973DF04D230B279000EB5B60 /* PThreadMutex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PThreadMutex.swift; sourceTree = "<group>"; };
+		97DBA12B230DCAF900B8CAA0 /* ObjcSyncMutex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjcSyncMutex.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				973DF01F230B276D00EB5B60 /* AppDelegate.swift */,
 				973DF021230B276D00EB5B60 /* ViewController.swift */,
 				973DF04D230B279000EB5B60 /* PThreadMutex.swift */,
+				97DBA12B230DCAF900B8CAA0 /* ObjcSyncMutex.swift */,
 				973DF023230B276D00EB5B60 /* Main.storyboard */,
 				973DF026230B276E00EB5B60 /* Assets.xcassets */,
 				973DF028230B276E00EB5B60 /* LaunchScreen.storyboard */,
@@ -259,6 +262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97DBA12C230DCAF900B8CAA0 /* ObjcSyncMutex.swift in Sources */,
 				973DF022230B276D00EB5B60 /* ViewController.swift in Sources */,
 				973DF020230B276D00EB5B60 /* AppDelegate.swift in Sources */,
 				973DF04E230B279000EB5B60 /* PThreadMutex.swift in Sources */,

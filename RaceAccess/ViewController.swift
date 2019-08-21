@@ -29,13 +29,79 @@ class ViewController: UIViewController {
     }
   }
 
-  private func dontTriggerRaceCondition() {
+  private func dontTriggerRaceConditionPThreadInline() {
     let queues = createQueues()
+    let startTime = Date()
+    var operationsCompleted = 0
     for queue in queues {
       queue.async {
         self.dictionaryLock.sync_same_file {
           print("Queue label: \(queue.label)")
           self.dictionary[queue.label] = "sup"
+          operationsCompleted += 1
+          if operationsCompleted == Constants.numQueuesToCreate {
+            let timeNeeded = Date().timeIntervalSince(startTime)
+            print("Time needed for pthread mutex: \(timeNeeded)")
+          }
+        }
+      }
+    }
+  }
+
+  private func dontTriggerRaceConditionPThreadNoInline() {
+    let queues = createQueues()
+    let startTime = Date()
+    var operationsCompleted = 0
+    for queue in queues {
+      queue.async {
+        self.dictionaryLock.sync {
+          print("Queue label: \(queue.label)")
+          self.dictionary[queue.label] = "sup"
+          operationsCompleted += 1
+          if operationsCompleted == Constants.numQueuesToCreate {
+            let timeNeeded = Date().timeIntervalSince(startTime)
+            print("Time needed for pthread mutex: \(timeNeeded)")
+          }
+        }
+      }
+    }
+  }
+
+  private func dontTriggerRaceConditionQueue() {
+    let queues = createQueues()
+    let startTime = Date()
+    var operationsCompleted = 0
+    let mutexQueue = DispatchQueue(label: "test_queue")
+    for queue in queues {
+      queue.async {
+        mutexQueue.sync {
+          print("Queue label: \(queue.label)")
+          self.dictionary[queue.label] = "sup"
+          operationsCompleted += 1
+          if operationsCompleted == Constants.numQueuesToCreate {
+            let timeNeeded = Date().timeIntervalSince(startTime)
+            print("Time needed for queue-based mutex: \(timeNeeded)")
+          }
+        }
+      }
+    }
+  }
+
+  private func dontTriggerRaceConditionObjcSync() {
+    let queues = createQueues()
+    let startTime = Date()
+    var operationsCompleted = 0
+    let mutex = ObjcSyncMutex()
+    for queue in queues {
+      queue.async {
+        mutex.synchronized {
+          print("Queue label: \(queue.label)")
+          self.dictionary[queue.label] = "sup"
+          operationsCompleted += 1
+          if operationsCompleted == Constants.numQueuesToCreate {
+            let timeNeeded = Date().timeIntervalSince(startTime)
+            print("Time needed for queue-based mutex: \(timeNeeded)")
+          }
         }
       }
     }
@@ -43,7 +109,7 @@ class ViewController: UIViewController {
 
   private func createQueues() -> [DispatchQueue] {
     var queues = [DispatchQueue]()
-    for _ in 0..<24 {
+    for _ in 0..<Constants.numQueuesToCreate {
       let queue = DispatchQueue.init(label: "thread_\(threadsCreated)", qos: .background, attributes: [], target: nil)
       queues.append(queue)
       threadsCreated += 1
@@ -56,7 +122,10 @@ class ViewController: UIViewController {
   }
 
   @IBAction func tappedDontCrashButton() {
-    dontTriggerRaceCondition()
+    //dontTriggerRaceConditionPThreadInline()
+    //dontTriggerRaceConditionQueue()
+    //dontTriggerRaceConditionObjcSync()
+    dontTriggerRaceConditionPThreadNoInline()
   }
 
   @IBAction func tappedTimeProfileButton() {
@@ -64,12 +133,13 @@ class ViewController: UIViewController {
     timeMutexInlined()
     timeMutexNoInline()
     timeQueue()
+    timeObjcSyncMutex()
   }
 
   private func timeNoMutex() {
     let noMutexStartTime = Date()
     var dict = [Int: String]()
-    for i in 0..<1000000 {
+    for i in 0..<Constants.loopCount {
       dict[i] = String(i)
     }
     let noMutexEndTime = Date()
@@ -81,7 +151,7 @@ class ViewController: UIViewController {
   private func timeMutexInlined() {
     let mutexStartTime = Date()
     var dict = [Int: String]()
-    for i in 0..<1000000 {
+    for i in 0..<Constants.loopCount {
       dictionaryLock.sync_same_file {
         dict[i] = String(i)
       }
@@ -95,7 +165,7 @@ class ViewController: UIViewController {
   private func timeMutexNoInline() {
     let mutexStartTime = Date()
     var dict = [Int: String]()
-    for i in 0..<1000000 {
+    for i in 0..<Constants.loopCount {
       dictionaryLock.sync {
         dict[i] = String(i)
       }
@@ -111,7 +181,7 @@ class ViewController: UIViewController {
     let queue = DispatchQueue(label: "test_queue")
     let queueStartTime = Date()
     var dict = [Int: String]()
-    for i in 0..<1000000 {
+    for i in 0..<Constants.loopCount {
       queue.sync {
         dict[i] = String(i)
       }
@@ -120,6 +190,20 @@ class ViewController: UIViewController {
     let truncatedTime = String(format: "%.6f", queueEndTime.timeIntervalSince(queueStartTime))
     syncQueueLabel.text = "With DispatchQueue, it took: \(truncatedTime) s"
     print("With DispatchQueue, it took: \(truncatedTime) s")
+  }
+
+  private func timeObjcSyncMutex() {
+    let mutexStartTime = Date()
+    var dict = [Int: String]()
+    let mutex = ObjcSyncMutex()
+    for i in 0..<Constants.loopCount {
+      mutex.synchronized {
+        dict[i] = String(i)
+      }
+    }
+    let mutexEndTime = Date()
+    let truncatedTime = String(format: "%.6f", mutexEndTime.timeIntervalSince(mutexStartTime))
+    print("With objcSync-based mutex, it took: \(truncatedTime) s")
   }
 }
 
@@ -131,5 +215,12 @@ private extension PThreadMutex {
     pthread_mutex_lock(&underlyingMutex)
     defer { pthread_mutex_unlock(&underlyingMutex) }
     return try execute()
+  }
+}
+
+extension ViewController {
+  struct Constants {
+    static let numQueuesToCreate = 24
+    static let loopCount = 10000000
   }
 }
